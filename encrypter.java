@@ -4,7 +4,7 @@ class encrypter {
 
     char[] convertedContent;
     static encrypter encrypter = new encrypter();
-    int shiftAmount = 13;
+    int shiftAmount = 1;
     int[] collectedAscii;
     boolean encrypt, decrypt;
 
@@ -12,6 +12,7 @@ class encrypter {
         public static void main(String[] args) {
             JLabel inputText = new JLabel("Input");
             JLabel outputText = new JLabel("Output");
+            JLabel offsetLabel = new JLabel("Offset:");
 
             JFrame frame = new JFrame();
             JTextArea text = new JTextArea();
@@ -19,6 +20,10 @@ class encrypter {
             JButton button = new JButton("Submit");
             JButton encrypt = new JButton("Encrypt");
             JButton decrypt = new JButton("Decrypt");
+            JComboBox<Integer> offsetSelector = new JComboBox<>();
+            for (int i = 1; i <= 25; i++) { 
+                offsetSelector.addItem(i);
+            }
             
             //set up the positions for everything (e.g. buttons, frame, etc)
             inputText.setBounds(50, 10, 400, 30);
@@ -28,6 +33,7 @@ class encrypter {
             button.setBounds(250, 250, 100, 50);
             encrypt.setBounds(50, 250, 100, 50);
             decrypt.setBounds(150, 250, 100, 50);
+            offsetSelector.setBounds(375, 250, 100, 50);
 
         button.addActionListener(e -> {
             String content = text.getText();
@@ -37,6 +43,8 @@ class encrypter {
         JLabel modeLabel = new JLabel("Mode: Encrypt");
         modeLabel.setBounds(200, 10, 200, 30);
         frame.add(modeLabel);
+
+
         
         encrypt.addActionListener(e -> {
             encrypter.encrypt = true;
@@ -49,10 +57,19 @@ class encrypter {
             encrypter.decrypt = true;
             modeLabel.setText("Mode: Decrypt");
         });
+
+        offsetSelector.addActionListener(e -> {
+            int selectedOffset = (int) offsetSelector.getSelectedItem();
+            encrypter.shiftAmount = selectedOffset; // Update shiftAmount
+            System.out.println("Shift amount updated to: " + selectedOffset);
+        });
+
         
         frame.add(text);
         frame.add(inputText);
         frame.add(outputText);
+        frame.add(offsetSelector);
+
         frame.add(result);
         frame.add(button);
         frame.add(encrypt);
